@@ -1,44 +1,35 @@
-package com.alexilyin.android.planyourchallenge;
+package com.alexilyin.android.planyourchallenge.m;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 
-import com.alexilyin.android.planyourchallenge.model.Task;
+import com.alexilyin.android.planyourchallenge.m.model.Task;
 
 /**
  * Created by user on 27.03.16.
  */
-public class DBHelper extends SQLiteOpenHelper {
+public class DBHelper {
 
+    private Context context;
     private static DBHelper instance;
+    private static DBOpenHelper dbOpenHelper;
 
     private DBHelper(Context context) {
-        super(context, DBContract.DB_NAME, null, DBContract.DB_VERSION);
+        dbOpenHelper = DBOpenHelper.getInstance(context);
+        this.context = context;
     }
 
-    public static final DBHelper getInstance(Context context) {
+    public static DBHelper getInstance(Context context) {
         if (instance == null)
             instance = new DBHelper(context);
         return instance;
     }
 
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL(DBContract.TaskTable.SQL_QUERY_CREATE_TABLE);
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(DBContract.TaskTable.SQL_QUERY_DROP_TABLE);
-        onCreate(db);
-    }
-
-    // CRUD
+    // CRUD for Task
 
     public void insertTask(Task task) {
-        SQLiteDatabase db = getWritableDatabase();
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
         try {
             db.beginTransaction();
             db.insert(
@@ -52,12 +43,12 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public Task queryTask(long id) {
-        SQLiteDatabase db = getReadableDatabase();
+        SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
         Cursor cursor = db.query(
                 DBContract.TaskTable.TABLE_NAME,
                 null,
                 "_id = ?",
-                new String[] { String.valueOf(id) },
+                new String[]{String.valueOf(id)},
                 null,
                 null,
                 null);
@@ -70,8 +61,8 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public Cursor queryTaskListCursor() {
-        SQLiteDatabase db = getReadableDatabase();
+    public Cursor queryTaskCursor() {
+        SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
         Cursor cursor = db.query(
                 DBContract.TaskTable.TABLE_NAME,
                 null,
@@ -85,14 +76,14 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public void updateTask(Task task) {
-        SQLiteDatabase db = getWritableDatabase();
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
         try {
             db.beginTransaction();
             db.update(
                     DBContract.TaskTable.TABLE_NAME,
                     DBContract.TaskTable.getContentValues(task),
                     "_id = ?",
-                    new String[]{ String.valueOf(task._id) });
+                    new String[]{String.valueOf(task._id)});
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
@@ -100,16 +91,17 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public void deleteTask(Task task) {
-        SQLiteDatabase db = getWritableDatabase();
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
         try {
             db.beginTransaction();
             db.delete(
                     DBContract.TaskTable.TABLE_NAME,
                     "_id = ?",
-                    new String[]{ String.valueOf(task._id) });
+                    new String[]{String.valueOf(task._id)});
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
         }
     }
+
 }

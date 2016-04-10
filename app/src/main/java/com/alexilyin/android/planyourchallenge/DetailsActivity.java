@@ -13,7 +13,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.alexilyin.android.planyourchallenge.model.Task;
+import com.alexilyin.android.planyourchallenge.m.DBHelper;
+import com.alexilyin.android.planyourchallenge.m.model.Task;
 
 /**
  * Created by user on 27.03.16.

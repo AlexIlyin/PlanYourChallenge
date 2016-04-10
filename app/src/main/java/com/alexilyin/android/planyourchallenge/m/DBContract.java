@@ -1,10 +1,10 @@
-package com.alexilyin.android.planyourchallenge;
+package com.alexilyin.android.planyourchallenge.m;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.provider.BaseColumns;
 
-import com.alexilyin.android.planyourchallenge.model.Task;
+import com.alexilyin.android.planyourchallenge.m.model.Task;
 
 /**
  * Created by user on 27.03.16.

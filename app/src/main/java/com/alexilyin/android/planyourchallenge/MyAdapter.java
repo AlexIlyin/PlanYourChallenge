@@ -9,7 +9,8 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.alexilyin.android.planyourchallenge.model.Task;
+import com.alexilyin.android.planyourchallenge.m.DBContract;
+import com.alexilyin.android.planyourchallenge.m.model.Task;
 
 /**
  * Created by user on 27.03.16.
